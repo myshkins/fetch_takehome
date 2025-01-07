@@ -1,4 +1,4 @@
-module github.com/myshkins/fetch_challenge
+module github.com/myshkins/fetch_takehome
 
 go 1.22.8
 

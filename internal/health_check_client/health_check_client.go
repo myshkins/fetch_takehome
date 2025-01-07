@@ -32,7 +32,9 @@ type HealthCheckClient struct {
 
 func NewHealthCheckClient(fp string, t int) *HealthCheckClient {
   var hc HealthCheckClient
-  hc.httpClient = &http.Client{}
+  hc.httpClient = &http.Client{
+    Timeout: time.Millisecond * 500,
+  }
   hc.endpoints = parseEndpointConfig(fp)
   hc.timeInterval = t
   hc.stats = make(map[string]map[string]int)
@@ -76,7 +78,7 @@ func (hc *HealthCheckClient) PingEndpoints() {
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
-	fmt.Printf("\nStarting endpoint healthcheck. Pinging every 15 seconds. Press Ctrl+C to stop\n")
+	fmt.Printf("\nStarting endpoint healthcheck. Pinging every %d seconds. Press Ctrl+C to stop\n", hc.timeInterval)
   
   err := hc.ping()
   if err != nil {
@@ -133,7 +135,8 @@ func (hc *HealthCheckClient) ping() error {
       hc.stats[endpoint.Name]["down"]++
 			fmt.Println(err)
 		}
-		// defer resp.Body.Close()
+		defer resp.Body.Close()
+
     if resp.StatusCode >= 200 && resp.StatusCode < 300 {
       hc.stats[endpoint.Name]["up"]++
     } else {
