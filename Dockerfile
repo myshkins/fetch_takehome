@@ -26,5 +26,5 @@ COPY --from=build-stage /app/sample_input.yaml .
 
 ENTRYPOINT [ "./health_check" ]
 
-CMD ["-config-file=./sample_input.yaml"]
+CMD ["--config-file=./sample_input.yaml"]
 

@@ -94,7 +94,6 @@ func (hc *HealthCheckClient) PingEndpoints() {
       }
 		case <-sigChan:
 			fmt.Println("\nReceived interrupt signal. Exiting...\n")
-      hc.printStats()
 			return
 		}
 	}
@@ -143,5 +142,6 @@ func (hc *HealthCheckClient) ping() error {
       hc.stats[endpoint.Name]["down"]++
     }
 	}
+  hc.printStats()
   return nil
 }
