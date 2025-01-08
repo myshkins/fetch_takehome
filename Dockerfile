@@ -22,9 +22,9 @@ WORKDIR /
 
 # Copy the binary from the build stage
 COPY --from=build-stage /app/cmd/health_check/health_check .
-COPY --from=build-stage /app/sample_input.yaml .
+COPY --from=build-stage /app/input.yaml .
 
 ENTRYPOINT [ "./health_check" ]
 
-CMD ["--config-file=./sample_input.yaml"]
+CMD ["--config-file=./input.yaml"]
 

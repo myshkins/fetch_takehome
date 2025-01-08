@@ -33,7 +33,7 @@ type HealthCheckClient struct {
 func NewHealthCheckClient(fp string, t int) *HealthCheckClient {
   var hc HealthCheckClient
   hc.httpClient = &http.Client{
-    Timeout: time.Millisecond * 500,
+    Timeout: 500 * time.Millisecond,
   }
   hc.endpoints = parseEndpointConfig(fp)
   hc.timeInterval = t
@@ -128,11 +128,10 @@ func (hc *HealthCheckClient) ping() error {
 	for _, endpoint := range hc.endpoints {
     req := formRequest(endpoint)
     
-    hc.httpClient.Do(req)
-		resp, err := http.Get(endpoint.Url)
+    resp, err := hc.httpClient.Do(req)
 		if err != nil {
       hc.stats[endpoint.Name]["down"]++
-			fmt.Println(err)
+      continue
 		}
 		defer resp.Body.Close()
 

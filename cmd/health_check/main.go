@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	endpointConfigFilePath := flag.String("config-file", "../../sample_input.yaml", "file path to the endpoint config yaml to be used")
+	endpointConfigFilePath := flag.String("config-file", "../../input.yaml", "file path to the endpoint config yaml to be used")
   timeInterval := flag.Int("interval", 15, "time interval in seconds to check endpoints")
 	flag.Parse()
   hc := health_check_client.NewHealthCheckClient(*endpointConfigFilePath, *timeInterval)
